@@ -114,8 +114,7 @@ def init_model():
         logger.error(e)
         reply = """模型未成功加载，请到页面左上角"模型配置"选项卡中重新选择后点击"加载模型"按钮"""
         if str(e) == "Unknown platform: darwin":
-            logger.info("该报错可能因为您使用的是 macOS 操作系统，需先下载模型至本地后执行 Web UI，具体方法请参考项目 README 中本地部署方法及常见问题："
-                        " https://github.com/imClumsyPanda/langchain-ChatGLM")
+            logger.info("该报错可能因为您使用的是 macOS 操作系统，需先下载模型至本地后执行 Web UI")
         else:
             logger.info(reply)
         return reply
@@ -305,17 +304,16 @@ block_css = """.importantButton {
 }"""
 
 webui_title = """
-# 🎉langchain-ChatGLM WebUI🎉
-👍 [https://github.com/imClumsyPanda/langchain-ChatGLM](https://github.com/imClumsyPanda/langchain-ChatGLM)
+# 美络智能问答机器人（知识库Plus）
 """
 default_vs = get_vs_list()[0] if len(get_vs_list()) > 1 else "为空"
-init_message = f"""欢迎使用 langchain-ChatGLM Web UI！
+init_message = f"""欢迎使用美络智能问答机器人！
 
 请在右侧切换模式，目前支持直接与 LLM 模型对话或基于本地知识库问答。
 
 知识库问答模式，选择知识库名称后，即可开始问答，当前知识库{default_vs}，如有需要可以在选择知识库名称后上传文件/文件夹至知识库。
 
-知识库暂不支持文件删除，该功能将在后续版本中推出。
+知识库暂不支持文件删除。
 """
 
 # 初始化消息
