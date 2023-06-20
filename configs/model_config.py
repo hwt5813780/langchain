@@ -1,5 +1,3 @@
-import torch.cuda
-import torch.backends
 import os
 import logging
 import uuid
@@ -25,7 +23,7 @@ embedding_model_dict = {
 EMBEDDING_MODEL = "text2vec"
 
 # Embedding running device
-EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+EMBEDDING_DEVICE = "cpu"
 
 
 # supported LLM models
@@ -34,6 +32,12 @@ EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backe
 # 如将 "chatglm-6b" 的 "local_model_path" 由 None 修改为 "User/Downloads/chatglm-6b"
 # 此处请写绝对路径
 llm_model_dict = {
+    "gpt-3.5-turbo": {
+        "name": "gpt-3.5-turbo",
+        "pretrained_model_name": "THUDM/gpt-3.5-turbo",
+        "local_model_path": None,
+        "provides": "OpenAI"
+    },
     "chatglm-6b-int4-qe": {
         "name": "chatglm-6b-int4-qe",
         "pretrained_model_name": "THUDM/chatglm-6b-int4-qe",
@@ -98,7 +102,7 @@ llm_model_dict = {
 }
 
 # LLM 名称
-LLM_MODEL = "chatglm-6b-int4"
+LLM_MODEL = "gpt-3.5-turbo"
 # 量化加载8bit 模型
 LOAD_IN_8BIT = False
 # Load the model with bfloat16 precision. Requires NVIDIA Ampere GPU.
@@ -117,7 +121,7 @@ STREAMING = True
 USE_PTUNING_V2 = False
 
 # LLM running device
-LLM_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+LLM_DEVICE = "cpu"
 
 # 知识库默认存储路径
 KB_ROOT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "knowledge_base")
