@@ -1,5 +1,6 @@
 import gradio as gr
 import shutil
+import os
 
 from chains.local_doc_qa import LocalDocQA
 from configs.model_config import *
@@ -7,7 +8,6 @@ import nltk
 import models.shared as shared
 from models.loader.args import parser
 from models.loader import LoaderCheckPoint
-import os
 
 nltk.data.path = [NLTK_DATA_PATH] + nltk.data.path
 
@@ -304,16 +304,16 @@ block_css = """.importantButton {
 }"""
 
 webui_title = """
-# 美络智能问答机器人（知识库Plus）
+# 美络知识库AI
 """
 default_vs = get_vs_list()[0] if len(get_vs_list()) > 1 else "为空"
-init_message = f"""欢迎使用美络智能问答机器人！
+init_message = f"""欢迎使用美络知识库AI
 
 请在右侧切换模式，目前支持直接与 LLM 模型对话或基于本地知识库问答。
 
 知识库问答模式，选择知识库名称后，即可开始问答，当前知识库{default_vs}，如有需要可以在选择知识库名称后上传文件/文件夹至知识库。
 
-知识库暂不支持文件删除。
+知识库暂不支持文件删除，该功能将在后续版本中推出。
 """
 
 # 初始化消息
@@ -327,7 +327,7 @@ default_theme_args = dict(
 with gr.Blocks(css=block_css, theme=gr.themes.Default(**default_theme_args)) as demo:
     vs_path, file_status, model_status = gr.State(
         os.path.join(KB_ROOT_PATH, get_vs_list()[0], "vector_store") if len(get_vs_list()) > 1 else ""), gr.State(""), gr.State(
-        model_status)
+            model_status)
     gr.Markdown(webui_title)
     with gr.Tab("对话"):
         with gr.Row():
@@ -557,5 +557,5 @@ with gr.Blocks(css=block_css, theme=gr.themes.Default(**default_theme_args)) as 
  .launch(server_name='0.0.0.0',
          server_port=7860,
          show_api=False,
-         share=True,
+         share=False,
          inbrowser=False))
