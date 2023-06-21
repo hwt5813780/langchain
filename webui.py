@@ -1,6 +1,5 @@
 import gradio as gr
 import shutil
-import os
 
 from chains.local_doc_qa import LocalDocQA
 from configs.model_config import *
@@ -8,6 +7,7 @@ import nltk
 import models.shared as shared
 from models.loader.args import parser
 from models.loader import LoaderCheckPoint
+import os
 
 nltk.data.path = [NLTK_DATA_PATH] + nltk.data.path
 
@@ -188,8 +188,7 @@ knowledge_base_test_mode_info = ("【注意】\n\n"
                                  """3. 使用"添加单条数据"添加文本至知识库时，内容如未分段，则内容越多越会稀释各查询内容与之关联的score阈值。\n\n"""
                                  "4. 单条内容长度建议设置在100-150左右。\n\n"
                                  "5. 本界面用于知识入库及知识匹配相关参数设定，但当前版本中，"
-                                 "本界面中修改的参数并不会直接修改对话界面中参数，仍需前往`configs/model_config.py`修改后生效。"
-                                 "相关参数将在后续版本中支持本界面直接修改。")
+                                 "本界面中修改的参数并不会直接修改对话界面中参数，仍需前往`configs/model_config.py`修改后生效。")
 
 
 def change_mode(mode, history):
@@ -304,16 +303,16 @@ block_css = """.importantButton {
 }"""
 
 webui_title = """
-# 美络知识库AI
+# 美络AI助手（知识库Plus）
 """
 default_vs = get_vs_list()[0] if len(get_vs_list()) > 1 else "为空"
-init_message = f"""欢迎使用美络知识库AI
+init_message = f"""欢迎使用美络AI助手！
 
 请在右侧切换模式，目前支持直接与 LLM 模型对话或基于本地知识库问答。
 
 知识库问答模式，选择知识库名称后，即可开始问答，当前知识库{default_vs}，如有需要可以在选择知识库名称后上传文件/文件夹至知识库。
 
-知识库暂不支持文件删除，该功能将在后续版本中推出。
+知识库暂不支持文件删除。
 """
 
 # 初始化消息
@@ -327,7 +326,7 @@ default_theme_args = dict(
 with gr.Blocks(css=block_css, theme=gr.themes.Default(**default_theme_args)) as demo:
     vs_path, file_status, model_status = gr.State(
         os.path.join(KB_ROOT_PATH, get_vs_list()[0], "vector_store") if len(get_vs_list()) > 1 else ""), gr.State(""), gr.State(
-            model_status)
+        model_status)
     gr.Markdown(webui_title)
     with gr.Tab("对话"):
         with gr.Row():
@@ -557,5 +556,5 @@ with gr.Blocks(css=block_css, theme=gr.themes.Default(**default_theme_args)) as 
  .launch(server_name='0.0.0.0',
          server_port=7860,
          show_api=False,
-         share=False,
+         share=True,
          inbrowser=False))
